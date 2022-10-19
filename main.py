@@ -5,7 +5,7 @@ from sklearn import metrics
 
 apple_daily = stock_info.get_data("aapl", start_date="12/04/2009", end_date="12/30/2009", index_as_date = True, interval="1d")
 
-print(apple_daily)
+# print(apple_daily)
 
 def add_daily_result(row):
     '''
@@ -27,7 +27,7 @@ apple_daily = apple_daily.fillna(0)
 
 X_train, X_test, y_train, y_test = train_test_split(apple_daily[['open', 'high', 'low', 'close', 'adjclose', 'volume']].to_numpy(), apple_daily[['result']].to_numpy(), test_size=0.33, shuffle=False)
 
-print(X_train)
+# print(X_train)
 
 clf = svm.SVC(kernel='linear').fit(X_train, y_train.ravel())
 y_pred = clf.predict(X_test)
