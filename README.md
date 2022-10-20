@@ -9,7 +9,9 @@
 - The **API** _yahoo_fin_ is being used to retrieve the **stock** data.
 
 ## Installation
-- `pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 ## Base branches
 - [x] Master
