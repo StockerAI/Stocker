@@ -1,9 +1,9 @@
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
-from sqlalchemy.orm import declarative_base
+from Model.base import Base
 
-Base = declarative_base()
+# Base = Create_Base
 
 class Tickers(Base):
     __tablename__ = 'Tickers'
