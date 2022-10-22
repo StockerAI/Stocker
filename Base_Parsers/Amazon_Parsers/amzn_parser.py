@@ -1,6 +1,6 @@
 from yahoo_fin import stock_info
 
-apple_daily = stock_info.get_data("aapl", interval="1d")
+amazon_daily = stock_info.get_data("amzn", interval="1d")
 
 def add_daily_result(row):
     '''
@@ -12,8 +12,8 @@ def add_daily_result(row):
     else:
         return 0
 
-apple_daily['result'] = apple_daily.apply(lambda row: add_daily_result(row), axis=1)
+amazon_daily['result'] = amazon_daily.apply(lambda row: add_daily_result(row), axis=1)
 
-apple_daily = apple_daily.fillna(0)
+amazon_daily = amazon_daily.fillna(0)
 
-print(apple_daily)
+print(amazon_daily)
