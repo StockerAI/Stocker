@@ -15,8 +15,7 @@ pip install -r requirements.txt
 
 ## Base branches
 - [x] Master
-- [ ] Develop
-- [ ] README
+- [x] Develop
 
 ## Base contributors
 1. [**Nikolas Bakalis**](https://github.com/NikosBakalis)
