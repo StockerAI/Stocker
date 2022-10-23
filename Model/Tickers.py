@@ -3,8 +3,6 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from Model.base import Base
 
-# Base = Create_Base
-
 class Tickers(Base):
     __tablename__ = 'Tickers'
 
