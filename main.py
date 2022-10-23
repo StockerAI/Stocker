@@ -11,4 +11,4 @@ if __name__ == '__main__':
             base.Base.metadata.create_all(engine, checkfirst=True)
 
             ticker_creator = tickers.Tickers()
-            countries_creator = countries.Countries()
+            # countries_creator = countries.Countries()
