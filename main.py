@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from Model.config import config
-from Model import base, tickers, countries
+from Model import base
 from Control.Base_Controllers.Inserters.base_inserter import base_inserter
 from Control.Base_Controllers.Selectors.base_selector import base_selector
 from Base_Parsers.Tickers_Parser.ticker_parser import ticker_value_list
