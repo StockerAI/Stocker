@@ -18,7 +18,6 @@ if __name__ == '__main__':
 
         with Session(engine).begin():
             base_selector(connection=connection, table=base.Base.metadata.tables['Tickers'])
-            print('awijdawjhdbawhdvahgkwdvhgawdv')
 
         # Uncomment bellow line to drop everything on the database.
         # base.Base.metadata.drop_all(engine, checkfirst=True)
