@@ -13,4 +13,3 @@ class Tickers(Base):
 
     def __repr__(self):
         return f"Tickers(tickerId={self.tickerId!r}, stockMarket={self.stockMarket} tickerName={self.tickerName!r}, organizationName={self.organizationName!r})"
-
