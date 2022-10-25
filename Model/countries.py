@@ -8,4 +8,4 @@ class Countries(Base):
     countryName = Column(String, unique=True, nullable=False)
 
     def __repr__(self):
-        return f"Countries(countryId={self.countryId!r}, countryName={self.countryName!r})"
+        return f'Countries(countryId={self.countryId!r}, countryName={self.countryName!r})'
