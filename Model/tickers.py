@@ -12,4 +12,4 @@ class Tickers(Base):
     UniqueConstraint(stockMarket, tickerName)
 
     def __repr__(self):
-        return f"Tickers(tickerId={self.tickerId!r}, stockMarket={self.stockMarket} tickerName={self.tickerName!r}, organizationName={self.organizationName!r})"
+        return f'Tickers(tickerId={self.tickerId!r}, stockMarket={self.stockMarket} tickerName={self.tickerName!r}, organizationName={self.organizationName!r})'
