@@ -17,9 +17,12 @@ if __name__ == '__main__':
 
         with Session(engine).begin():
             base_inserter(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__], values=ticker_value_list)
+            base.Base.metadata.tables[tickers.Tickers.__tablename__].drop(engine)
 
         with Session(engine).begin():
-            stock_parser(sql_select_to_generator(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))).to_sql(base.Base.metadata.tables[stocks.Stocks.__tablename__], engine, if_exists='append')
+            base_inserter(connection=connection, table=base.Base.metadata.tables[stocks.Stocks.__tablename__], values=stock_parser(sql_select_to_generator(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))))
+            # stock_parser(sql_select_to_generator(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))).to_sql(base.Base.metadata.tables[stocks.Stocks.__tablename__], engine, if_exists='append')
+            # base.Base.metadata.tables[stocks.Stocks.__tablename__].drop(engine)
 
         # Uncomment bellow line to drop everything on the database.
         # base.Base.metadata.drop_all(engine, checkfirst=True)

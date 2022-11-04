@@ -4,7 +4,7 @@ from Model.base import Base
 class Tickers(Base):
     __tablename__ = 'Tickers'
 
-    tickerId = Column(Integer, primary_key=True)
+    tickerId = Column(Integer, primary_key=True, nullable=False)
     stockMarket = Column(String, nullable=False)
     tickerName = Column(String, nullable=False)
     organizationName = Column(String)

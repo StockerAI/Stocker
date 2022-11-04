@@ -11,4 +11,8 @@ def stock_parser(tickers):
             base_data_frame = pd.concat([base_data_frame, current_data_frame], axis=0)
         except:
             print('There were no stock info data for ticker:', ticker)
-    return base_data_frame
+    base_data_frame.reset_index(drop=True, inplace=True)
+    base_data_frame.index.rename('stockId', inplace=True)
+    base_data_frame.dropna(inplace=True)
+    base_list = base_data_frame.to_dict('records')
+    return base_list
