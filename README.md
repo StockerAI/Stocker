@@ -9,8 +9,19 @@
 - The **API** _yahoo_fin_ is being used to retrieve the **stock** data.
 
 ## Installation
+```powershell
+conda env create --file environment.yml
+conda activate stocker
 ```
-pip install -r requirements.txt
+
+If there are more packages installed, update the `environment.yml` file with:
+```powershell
+conda env export --from-history > environment.yml
+```
+
+To export the packages to a `requirements.txt` file:
+```powershell
+pipreqs . --force
 ```
 
 ## Base branches
