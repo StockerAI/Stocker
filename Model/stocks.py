@@ -2,7 +2,25 @@ from sqlalchemy import BigInteger, Column, Date, Float, Integer, String, UniqueC
 from Model.base import Base
 
 class Stocks(Base):
+    '''
+    Stocks table class creation.
+
+    Columns:
+        `stockId`: The ID of the Stock,
+        `tickerId`: The ID of the Ticker,
+        `date`: The date value retrieved from the `yahoo_fin` API,
+        `open`: The open value retrieved from the `yahoo_fin` API,
+        `high`: The high value retrieved from the `yahoo_fin` API,
+        `low`: The low value retrieved from the `yahoo_fin` API,
+        `close`: The close value retrieved from the `yahoo_fin` API,
+        `adjclose`: The adjusted close value retrieved from the `yahoo_fin` API,
+        `volume`: The volume value retrieved from the `yahoo_fin` API.
+    '''
+
     __tablename__ = 'Stocks'
+    '''
+    The name of the table that will be registered on the Database.
+    '''
 
     stockId = Column(Integer, primary_key=True, nullable=False)
     tickerId = Column(Integer, nullable=False)
