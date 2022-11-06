@@ -13,7 +13,6 @@ def stock_parser_worker(ticker, curr_idx, df_index_ptr):
         current_data_frame = stock_info.get_data(ticker[2], index_as_date=False)
     except Exception as e:
         e_flag = True
-        # print(f'[Exception {e}] There were no stock info data for ticker:', ticker)
     if not e_flag:
         current_data_frame['tickerId'] = ticker[0]
         current_data_frame.drop('ticker', axis=1, inplace=True)
@@ -22,14 +21,16 @@ def stock_parser_worker(ticker, curr_idx, df_index_ptr):
     base_data_frame.dropna(inplace=True)
     base_data_frame.index = range(df_index_ptr, df_index_ptr + base_data_frame.shape[0])
     base_data_frame.index.rename('stockId', inplace=True)
-    on_demand_garbage_collect()
-    # pprint(base_data_frame)
     base_list = base_data_frame.to_dict('records')
+    on_demand_garbage_collect()
     return base_list, curr_idx + 1, df_index_ptr + base_data_frame.shape[0]
 
 
 def stock_parser(tickers):
-    tickers_tmp = tickers[:200]
     curr_idx, df_index_ptr = 0, 0
-    for ticker in tqdm(tickers_tmp, desc='Parsing Stock Data', unit=' ticker', total=len(tickers_tmp)):
+    for ticker in tqdm(tickers, desc='Parsing Stock Data', unit=' ticker', total=len(tickers)):
         base_list, curr_idx, df_index_ptr = stock_parser_worker(ticker, curr_idx, df_index_ptr)
+        # check if base_list is empty
+        if base_list:
+            # TODO: Insert base_list into database
+            pass
