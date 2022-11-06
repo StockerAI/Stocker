@@ -1,0 +1,16 @@
+name: stocker
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - sqlalchemy
+  - modin-all
+  - pip:
+    - scikit_learn==1.1.3
+    - SQLAlchemy==1.4.32
+    - yahoo_fin==0.8.9.1
+    - psycopg2==2.9.5
+    - ray==2.0.0
+    - gpustat==1.0.0
+    - tqdm==4.64.1
+  
