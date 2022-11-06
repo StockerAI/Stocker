@@ -8,6 +8,8 @@ from Base_Parsers.Tickers_Parser.ticker_parser import ticker_value_list
 from Base_Parsers.SQL_Select_To_Generator_Parsers.sql_select_to_generators_parser import sql_select_to_generator, sql_select_to_list
 from Base_Parsers.Stock_Parsers.stock_parser import stock_parser
 from Control.Util_Controllers.modin_utils import init_modin
+from tqdm import tqdm
+
 
 if __name__ == '__main__':
     init_modin()
@@ -17,13 +19,14 @@ if __name__ == '__main__':
         with Session(engine).begin():
             base.Base.metadata.create_all(engine, checkfirst=True)
 
-        # with Session(engine).begin():
-        #     base_inserter(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__], values=ticker_value_list)
-            # base.Base.metadata.tables[tickers.Tickers.__tablename__].drop(engine)
+        with Session(engine).begin():
+            base_inserter(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__], values=ticker_value_list)
+            base.Base.metadata.tables[tickers.Tickers.__tablename__].drop(engine)
 
         with Session(engine).begin():
-            base_inserter(connection=connection, table=base.Base.metadata.tables[stocks.Stocks.__tablename__], values=stock_parser(sql_select_to_list(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))))
-            # stock_parser(sql_select_to_generator(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))).to_sql(base.Base.metadata.tables[stocks.Stocks.__tablename__], engine, if_exists='append')
+            tickers = sql_select_to_list(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))
+            for ticker in tqdm(tickers, desc='Parsing Stock Data', unit=' ticker', total=len(tickers)):
+                base_inserter(connection=connection, table=base.Base.metadata.tables[stocks.Stocks.__tablename__], values=stock_parser(ticker=ticker))
             # base.Base.metadata.tables[stocks.Stocks.__tablename__].drop(engine)
 
         # Uncomment bellow line to drop everything on the database.
