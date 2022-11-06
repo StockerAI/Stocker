@@ -1,10 +1,7 @@
 
 import modin.pandas as pd
-
-from tqdm import tqdm
 from yahoo_fin import stock_info
 from Control.Util_Controllers.modin_utils import on_demand_garbage_collect
-
 
 def stock_parser_worker(ticker, curr_idx, df_index_ptr):
     base_data_frame = pd.DataFrame(columns=['tickerId', 'date', 'open', 'high', 'low', 'close', 'adjclose', 'volume'])
@@ -25,12 +22,9 @@ def stock_parser_worker(ticker, curr_idx, df_index_ptr):
     on_demand_garbage_collect()
     return base_list, curr_idx + 1, df_index_ptr + base_data_frame.shape[0]
 
-
-def stock_parser(tickers):
+def stock_parser(ticker):
     curr_idx, df_index_ptr = 0, 0
-    for ticker in tqdm(tickers, desc='Parsing Stock Data', unit=' ticker', total=len(tickers)):
-        base_list, curr_idx, df_index_ptr = stock_parser_worker(ticker, curr_idx, df_index_ptr)
-        # check if base_list is empty
-        if base_list:
-            # TODO: Insert base_list into database
-            pass
+    base_list, curr_idx, df_index_ptr = stock_parser_worker(ticker, curr_idx, df_index_ptr)
+    # check if base_list is empty
+    if base_list:
+        return base_list
