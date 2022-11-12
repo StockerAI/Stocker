@@ -4,7 +4,7 @@ from sklearn import svm
 def base_svm(initial_dataframe, prediction_column_name, prediction_dataframe):
     '''
     Function for base `SVM` execution.
-    
+
     Arguments:
         `initial_dataframe`: The Initial DataFrame to train the machine.
         `prediction_column_name`: The Name of the Column that needs to be predicted.

@@ -4,7 +4,7 @@ from sklearn.linear_model import LogisticRegression
 def base_logistic_regression(initial_dataframe, prediction_column_name, prediction_dataframe):
     '''
     Function for base `Logistic Regression` execution.
-    
+
     Arguments:
         `initial_dataframe`: The Initial DataFrame to train the machine.
         `prediction_column_name`: The Name of the Column that needs to be predicted.

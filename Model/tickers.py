@@ -11,7 +11,7 @@ class Tickers(Base):
         `tickerName`: The Name (or Abbreviation) of the Ticker and,
         `organizationName`: The Organization that the Ticker belongs to.
     '''
-    
+
     __tablename__ = 'Tickers'
     '''
     The name of the table that will be registered on the Database.
