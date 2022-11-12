@@ -5,7 +5,7 @@ from Model import base, tickers, countries, stocks
 from Control.Base_Controllers.Inserters.base_inserter import base_inserter
 from Control.Base_Controllers.Selectors.base_selector import base_selector
 from Base_Parsers.Tickers_Parser.ticker_parser import ticker_value_list
-from Base_Parsers.SQL_Select_To_Generator_Parsers.sql_select_to_data_parser import sql_select_to_generator, sql_select_to_list
+from Base_Parsers.SQL_Select_To_Data_Parsers.sql_select_to_data_parser import sql_select_to_generator, sql_select_to_list
 from Base_Parsers.Stock_Parsers.stock_parser import stock_parser
 from Control.Util_Controllers.modin_utils import init_modin
 from tqdm import tqdm
