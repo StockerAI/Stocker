@@ -6,10 +6,7 @@ class Company_Details(Base):
     Company Details table class creation.
 
     Columns: 
-        `tickerId`: The ID of the Ticker,
-        `stockMarket`: The Stock Market that the Ticker belongs to,
-        `tickerName`: The Name (or Abbreviation) of the Ticker and,
-        `organizationName`: The Organization that the Ticker belongs to.
+        TODO: Add the column names and short description.
     '''
 
     __tablename__ = 'CompanyDetails'
@@ -138,5 +135,5 @@ class Company_Details(Base):
     dayHigh = Column(Float)
     regularMarketPrice = Column(Float)
 
-    def __repr__(self):
-        return f'Company_Details(tickerId={self.tickerId!r}, stockMarket={self.stockMarket!r} tickerName={self.tickerName!r}, organizationName={self.organizationName!r})'
+    # def __repr__(self):
+    #     return f'Company_Details(tickerId={self.tickerId!r}, stockMarket={self.stockMarket!r} tickerName={self.tickerName!r}, organizationName={self.organizationName!r})'
