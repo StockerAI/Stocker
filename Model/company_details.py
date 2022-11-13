@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, UniqueConstraint, Text, Float, Boolean
+from sqlalchemy import Column, Integer, String, Text, Float, Boolean
 from Model.base import Base
 
 class Company_Details(Base):
