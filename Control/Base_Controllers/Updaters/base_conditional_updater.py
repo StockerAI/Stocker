@@ -7,10 +7,12 @@ def base_conditional_updater(connection, table, columnName, columnValue, values)
     Arguments:
         `connection`: User must provide the Connection of the `DataBase`.
         `table`: User must provide the Table od the `DataBase` from which the data will be extracted from.
-        `values`: User must provide a `list` of `dictionaries` with the values that need to be added to the `table` of the `DataBase`.
+        `columnName`: User must provide the `Name` of the `Column` that needs to be updated.
+        `columnValue`: User must provide the `Value` of the `Column` `Where` the `Update` must happen.
+        `values`: User must provide a `list` of `dictionaries` with the values that need to be updated to the `table` of the `DataBase`.
 
     SQL query example:
-        INSERT INTO `table` VALUES `values`
+        UPDATE `table` SET `values` WHERE `condition`
     '''
     try:
         connection.execute(update(table).where(columnName == columnValue), values)
