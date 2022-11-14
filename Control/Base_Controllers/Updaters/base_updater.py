@@ -13,6 +13,6 @@ def base_updater(connection, table, values):
         UPDATE `table` SET `values`
     '''
     try:
-        connection.execute(update(table), values)
+        connection.execute_options(stream_results=False).execute(update(table), values)
     except:
-        print('Something went wrong with update.')
+        print('Something went wrong with update.') # TODO: This must be a logger.
