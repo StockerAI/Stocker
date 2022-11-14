@@ -15,8 +15,7 @@ class Company_Details(Base):
     '''
 
     companyDetailsId = Column(Integer, primary_key=True, nullable=False)
-    tickerId = Column(Integer, nullable=False)
-    companyName = Column(String)
+    tickerId = Column(Integer, unique=True, nullable=False)
     sector = Column(String)
     industry = Column(String)
     fullTimeEmployees = Column(Integer)
@@ -138,7 +137,6 @@ class Company_Details(Base):
     def __repr__(self):
         return(f'Company_Details(companyDetailsId={self.companyDetailsId!r},'
                 f'tickerId={self.tickerId!r},'
-                f'companyName={self.companyName!r},'
                 f'sector={self.sector!r},'
                 f'industry={self.industry!r},'
                 f'fullTimeEmployees={self.fullTimeEmployees!r},'
