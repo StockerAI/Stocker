@@ -13,6 +13,6 @@ def base_inserter(connection, table, values):
         INSERT INTO `table` VALUES `values`
     '''
     try:
-        connection.execute_options(stream_results=False).execute(insert(table), values)
+        connection.execution_options(stream_results=False).execute(insert(table), values)
     except:
         print('Something went wrong with insertion.') # TODO: This must be a logger.

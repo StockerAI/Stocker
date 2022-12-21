@@ -13,9 +13,11 @@ from Base_Parsers.company_details_parsers.company_details_parser import company_
 from Control.Util_Controllers.modin_utils import init_modin
 from tqdm import tqdm
 import yfinance
+import os
 
 
 if __name__ == '__main__':
+    os.environ["MODIN_ENGINE"] = "ray"  # Modin will use Ray
     init_modin()
     engine = create_engine('postgresql+psycopg2://' + config()['user'] + ':' + config()['password'] + '@' + config()['host'] + '/' + config()['database'] + '', echo=True)    
     with engine.connect() as connection:

@@ -12,6 +12,6 @@ def base_selector(connection, table):
         SELECT * FROM `table`
     '''
     try:
-        return connection.execute_options(stream_results=False).execute(select(table))
+        return connection.execution_options(stream_results=False).execute(select(table))
     except:
         print('Something went wrong with selection.') # TODO: This must be a logger.
