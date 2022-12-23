@@ -12,7 +12,6 @@ from Base_Parsers.Stock_Parsers.stock_parser import stock_parser
 from Base_Parsers.company_details_parsers.company_details_parser import company_details_parser
 from Control.Util_Controllers.modin_utils import init_modin
 from tqdm import tqdm
-import yfinance
 import os
 
 
