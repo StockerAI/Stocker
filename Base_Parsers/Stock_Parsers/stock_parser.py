@@ -3,12 +3,12 @@ import modin.pandas as pd
 from yahoo_fin import stock_info
 from Control.Util_Controllers.modin_utils import on_demand_garbage_collect
 
-def stock_parser_worker(ticker, curr_idx, df_index_ptr):
+def stock_parser_worker(ticker, curr_idx, df_index_ptr, start_date=None, end_date=None):
     # TODO: @Andrea add comments here please.
     base_data_frame = pd.DataFrame(columns=['tickerId', 'date', 'open', 'high', 'low', 'close', 'adjclose', 'volume'])
     e_flag = False
     try:
-        current_data_frame = stock_info.get_data(ticker[2], index_as_date=False)
+        current_data_frame = stock_info.get_data(ticker[2], index_as_date=False, start_date=start_date, end_date=end_date)
     except Exception as e:
         e_flag = True
     if not e_flag:
@@ -23,7 +23,7 @@ def stock_parser_worker(ticker, curr_idx, df_index_ptr):
     on_demand_garbage_collect()
     return base_list, curr_idx + 1, df_index_ptr + base_data_frame.shape[0]
 
-def stock_parser(ticker):
+def stock_parser(ticker, start_date=None, end_date=None):
     '''
     Function that parses all the stock values of a `ticker` into a `list` of `dictionaries`.
 
@@ -31,7 +31,7 @@ def stock_parser(ticker):
         `ticker`: Data for the current ticker retrieved from the `DataBase`.
     '''
     curr_idx, df_index_ptr = 0, 0
-    base_list, curr_idx, df_index_ptr = stock_parser_worker(ticker, curr_idx, df_index_ptr)
+    base_list, curr_idx, df_index_ptr = stock_parser_worker(ticker, curr_idx, df_index_ptr, start_date=start_date, end_date=end_date)
     # check if base_list is empty
     if base_list:
         return base_list
