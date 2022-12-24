@@ -16,7 +16,7 @@ def base_conditional_ordered_limited_selector(connection, table, columnName, col
         SELECT * FROM `table`
         WHERE `table`.`columnName` = `columnValue`
         ORDER BY `orderColumn`
-        LIMIT = 1
+        LIMIT = `limitNumber`
     '''
     try:
         return connection.execution_options(stream_results=False).execute(select(table).where(columnName == columnValue).order_by(desc(orderColumn)).limit(limitNumber))
