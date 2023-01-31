@@ -14,4 +14,5 @@ def base_selector(connection, table):
     try:
         return connection.execution_options(stream_results=False).execute(select(table))
     except:
-        print('Something went wrong with selection.') # TODO: This must be a logger.
+        pass
+        # print('Something went wrong with selection.') # TODO: This must be a logger.

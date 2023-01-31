@@ -17,4 +17,5 @@ def base_conditional_updater(connection, table, columnName, columnValue, values)
     try:
         connection.execution_options(stream_results=False).execute(update(table).where(columnName == columnValue), values)
     except:
-        print('Something went wrong with conditional update.') # TODO: This must be a logger.
+        pass
+        # print('Something went wrong with conditional update.') # TODO: This must be a logger.

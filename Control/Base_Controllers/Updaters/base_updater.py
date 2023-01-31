@@ -15,4 +15,5 @@ def base_updater(connection, table, values):
     try:
         connection.execution_options(stream_results=False).execute(update(table), values)
     except:
-        print('Something went wrong with update.') # TODO: This must be a logger.
+        pass
+        # print('Something went wrong with update.') # TODO: This must be a logger.

@@ -105,7 +105,8 @@ if __name__ == '__main__':
                             table=base.Base.metadata.tables[stocks.Stocks.__tablename__],
                             values=stock_parser(ticker=ticker, start_date=last_stock_value_date_ping))
                     except:
-                        print('Something went wrong with smart insertion.') # TODO: This must be a logger.
+                        pass
+                        # print('Something went wrong with smart insertion.') # TODO: This must be a logger.
         # endregion
 
         # Uncomment bellow line to drop everything on the database.

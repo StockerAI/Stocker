@@ -21,4 +21,5 @@ def base_conditional_ordered_limited_selector(connection, table, columnName, col
     try:
         return connection.execution_options(stream_results=False).execute(select(table).where(columnName == columnValue).order_by(desc(orderColumn)).limit(limitNumber))
     except:
-        print('Something went wrong with conditional ordered limited selection.') # TODO: This must be a logger.
+        pass
+        # print('Something went wrong with conditional ordered limited selection.') # TODO: This must be a logger.
