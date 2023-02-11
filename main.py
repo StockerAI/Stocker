@@ -7,7 +7,6 @@ from Control.Base_Controllers.Selectors.base_selector import base_selector
 from Control.Base_Controllers.Selectors.base_conditional_ordered_limited_selector import base_conditional_ordered_limited_selector
 from Control.Base_Controllers.Updaters.base_updater import base_updater
 from Control.Base_Controllers.Updaters.base_conditional_updater import base_conditional_updater
-from Base_Parsers.Tickers_Parser.ticker_parser import ticker_value_list
 from Base_Parsers.SQL_Select_To_Data_Parsers.sql_select_to_data_parser import sql_select_to_generator, sql_select_to_list
 from Base_Parsers.Stock_Parsers.stock_parser import stock_parser
 from Base_Parsers.company_details_parsers.company_details_parser import company_details_parser
@@ -30,6 +29,7 @@ if __name__ == '__main__':
         # region Inserter for Tickers table.
         with Session(engine).begin():
             if not base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]).rowcount:
+                from Base_Parsers.Tickers_Parser.ticker_parser import ticker_value_list
                 base_inserter(
                     connection=connection,
                     table=base.Base.metadata.tables[tickers.Tickers.__tablename__],
