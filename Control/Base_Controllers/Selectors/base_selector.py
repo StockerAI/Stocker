@@ -1,18 +1,17 @@
 from sqlalchemy import select
 
-def base_selector(connection, table):
+def base_selector(table):
     '''
     Function that executes the base `SQL` SELECT `query`.
 
     Arguments:
-        `connection`: User must provide the Connection of the `DataBase`.
         `table`: User must provide the Table od the `DataBase` from which the data will be extracted from.
 
     SQL query example:
         SELECT * FROM `table`
     '''
     try:
-        return connection.execution_options(stream_results=False).execute(select(table))
+        return select(table)
     except:
         pass
         # print('Something went wrong with selection.') # TODO: This must be a logger.
