@@ -1,4 +1,4 @@
-from sqlalchemy import select, desc
+from sqlalchemy import select
 
 def base_conditional_ordered_limited_selector(table, columnName, columnValue, orderColumn, limitNumber):
     '''
@@ -18,7 +18,7 @@ def base_conditional_ordered_limited_selector(table, columnName, columnValue, or
         LIMIT = `limitNumber`
     '''
     try:
-        return select(table).where(columnName == columnValue).order_by(desc(orderColumn)).limit(limitNumber)
+        return select(table).where(columnName == columnValue).order_by(orderColumn).limit(limitNumber)
     except:
         pass
         # print('Something went wrong with conditional ordered limited selection.') # TODO: This must be a logger.
