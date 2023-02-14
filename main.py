@@ -12,7 +12,6 @@ from Base_Parsers.Stock_Parsers.stock_parser import stock_parser
 from Base_Parsers.company_details_parsers.company_details_parser import company_details_parser
 from Control.Util_Controllers.modin_utils import init_modin
 from tqdm import tqdm
-import yfinance
 import os
 import datetime
 
@@ -44,6 +43,7 @@ if __name__ == '__main__':
         #         table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))
         #     for ticker in tqdm(tickerList, desc='Parsing Stock Data', unit=' ticker', total=len(tickerList)):
         #         try:
+        #             import yfinance
         #             base_conditional_updater(
         #                 connection=connection,
         #                 table=base.Base.metadata.tables[tickers.Tickers.__tablename__],
