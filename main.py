@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from Model.config import config
 from Model import base, tickers, countries, stocks, company_details
+from Control.Executioner.silent_executioner import silent_executioner
 from Control.Base_Controllers.Inserters.base_inserter import base_inserter
 from Control.Base_Controllers.Selectors.base_selector import base_selector
 from Control.Base_Controllers.Selectors.base_conditional_ordered_limited_selector import base_conditional_ordered_limited_selector
@@ -27,83 +28,111 @@ if __name__ == '__main__':
 
         # region Inserter for Tickers table.
         with Session(engine).begin():
-            if not base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]).rowcount:
+            if not silent_executioner(
+                connection=connection,
+                SIUD=base_selector(
+                    table=base.Base.metadata.tables[tickers.Tickers.__tablename__])).rowcount:
                 from Base_Parsers.Tickers_Parser.ticker_parser import ticker_value_list
-                base_inserter(
+                silent_executioner(
                     connection=connection,
-                    table=base.Base.metadata.tables[tickers.Tickers.__tablename__],
-                    values=ticker_value_list)
+                    SIUD=base_inserter(
+                        table=base.Base.metadata.tables[tickers.Tickers.__tablename__],
+                        values=ticker_value_list))
             # base.Base.metadata.tables[tickers.Tickers.__tablename__].drop(engine)
         # endregion
 
         # region Updater for Tickers table.
         # with Session(engine).begin():
-        #     tickerList = sql_select_to_list(base_selector(
-        #         connection=connection,
-        #         table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))
+        #     tickerList = sql_select_to_list(
+        #         base_executioner(
+        #             connection=connection,
+        #             SIUD=base_selector(
+        #                 table=base.Base.metadata.tables[tickers.Tickers.__tablename__])))
         #     for ticker in tqdm(tickerList, desc='Parsing Stock Data', unit=' ticker', total=len(tickerList)):
         #         try:
         #             import yfinance
-        #             base_conditional_updater(
+        #             base_executioner(
         #                 connection=connection,
-        #                 table=base.Base.metadata.tables[tickers.Tickers.__tablename__],
-        #                 columnName=base.Base.metadata.tables[tickers.Tickers.__tablename__].c.tickerId,
-        #                 columnValue=ticker[0],
-        #                 values=[{base.Base.metadata.tables[tickers.Tickers.__tablename__].c.organizationName.name: yfinance.Ticker(ticker[2]).info['longName']}])
+        #                 SIUD=base_conditional_updater(
+        #                     table=base.Base.metadata.tables[tickers.Tickers.__tablename__],
+        #                     columnName=base.Base.metadata.tables[tickers.Tickers.__tablename__].c.tickerId,
+        #                     columnValue=ticker[0],
+        #                     values=[{base.Base.metadata.tables[tickers.Tickers.__tablename__].c.organizationName.name: yfinance.Ticker(ticker[2]).info['longName']}]))
         #         except:
-        #             base_conditional_updater(
+        #             base_executioner(
         #                 connection=connection,
-        #                 table=base.Base.metadata.tables[tickers.Tickers.__tablename__],
-        #                 columnName=base.Base.metadata.tables[tickers.Tickers.__tablename__].c.tickerId,
-        #                 columnValue=ticker[0],
-        #                 values=[{base.Base.metadata.tables[tickers.Tickers.__tablename__].c.organizationName.name: None}])
+        #                 SIUD=base_conditional_updater(
+        #                     table=base.Base.metadata.tables[tickers.Tickers.__tablename__],
+        #                     columnName=base.Base.metadata.tables[tickers.Tickers.__tablename__].c.tickerId,
+        #                     columnValue=ticker[0],
+        #                     values=[{base.Base.metadata.tables[tickers.Tickers.__tablename__].c.organizationName.name: None}]))
         #     # base.Base.metadata.tables[tickers.Tickers.__tablename__].drop(engine)
         # endregion
 
         # region Inserter for Stocks table.
         with Session(engine).begin():
-            if not base_selector(connection=connection, table=base.Base.metadata.tables[stocks.Stocks.__tablename__]).rowcount:
-                tickers = sql_select_to_list(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))
-                for ticker in tqdm(tickers, desc='Parsing Stock Data', unit=' ticker', total=len(tickers)):
-                    base_inserter(
+            if not silent_executioner(
+                connection=connection,
+                SIUD=base_selector(
+                    table=base.Base.metadata.tables[stocks.Stocks.__tablename__])).rowcount:
+                tickers = sql_select_to_list(
+                    silent_executioner(
                         connection=connection,
-                        table=base.Base.metadata.tables[stocks.Stocks.__tablename__],
-                        values=stock_parser(ticker=ticker))
+                        SIUD=base_selector(
+                            table=base.Base.metadata.tables[tickers.Tickers.__tablename__])))
+                for ticker in tqdm(tickers, desc='Parsing Stock Data', unit=' ticker', total=len(tickers)):
+                    silent_executioner(
+                        connection=connection,
+                        SIUD=base_inserter(
+                            table=base.Base.metadata.tables[stocks.Stocks.__tablename__],
+                            values=stock_parser(ticker=ticker)))
             # base.Base.metadata.tables[stocks.Stocks.__tablename__].drop(engine)
         # endregion
 
         # region Inserter for CompanyDetails table.
         with Session(engine).begin():
-            if not base_selector(connection=connection, table=base.Base.metadata.tables[company_details.Company_Details.__tablename__]).rowcount:
-                tickers = sql_select_to_list(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))
+            if not silent_executioner(
+                connection=connection,
+                SIUD=base_selector(
+                    table=base.Base.metadata.tables[company_details.Company_Details.__tablename__])).rowcount:
+                tickers = sql_select_to_list(
+                    silent_executioner(
+                        SIUD=base_selector(
+                            table=base.Base.metadata.tables[tickers.Tickers.__tablename__])))
                 for ticker in tqdm(tickers, desc='Parsing Stock Data', unit=' ticker', total=len(tickers)):
-                    base_inserter(
+                    silent_executioner(
                         connection=connection,
-                        table=base.Base.metadata.tables[company_details.Company_Details.__tablename__],
-                        values=[company_details_parser(ticker=ticker)])
+                        SIUD=base_inserter(
+                            table=base.Base.metadata.tables[company_details.Company_Details.__tablename__],
+                            values=[company_details_parser(ticker=ticker)]))
             # base.Base.metadata.tables[company_details.Company_Details.__tablename__].drop(engine)
         # endregion
 
         # region Inserter for Stocks table, new stock vales based on date.
         with Session(engine).begin():
-            if base_selector(connection=connection, table=base.Base.metadata.tables[stocks.Stocks.__tablename__]).rowcount:
-                tickers = sql_select_to_list(base_selector(connection=connection, table=base.Base.metadata.tables[tickers.Tickers.__tablename__]))
+            if silent_executioner(
+                connection=connection,
+                SIUD=base_selector(
+                    table=base.Base.metadata.tables[stocks.Stocks.__tablename__])).rowcount:
+                tickers = sql_select_to_list(silent_executioner(connection=connection, SIUD=base_selector(table=base.Base.metadata.tables[tickers.Tickers.__tablename__])))
                 for ticker in tqdm(tickers, desc='Parsing Stock Data', unit=' ticker', total=len(tickers)):
                     try:
                         last_stock_value_date_ping = sql_select_to_list(
-                                base_conditional_ordered_limited_selector(
-                                    connection=connection,
+                            silent_executioner(
+                                connection=connection,
+                                SIUD=base_conditional_ordered_limited_selector(
                                     table=base.Base.metadata.tables[stocks.Stocks.__tablename__],
                                     columnName=base.Base.metadata.tables[stocks.Stocks.__tablename__].c.tickerId,
                                     columnValue=ticker[0],
                                     orderColumn=base.Base.metadata.tables[stocks.Stocks.__tablename__].c.date,
                                     limitNumber=1
                                 )
-                            )[0][2] + datetime.timedelta(days=1)
-                        base_inserter(
+                            ))[0][2] + datetime.timedelta(days=1)
+                        silent_executioner(
                             connection=connection,
+                            SIUD=base_inserter(
                             table=base.Base.metadata.tables[stocks.Stocks.__tablename__],
-                            values=stock_parser(ticker=ticker, start_date=last_stock_value_date_ping))
+                            values=stock_parser(ticker=ticker, start_date=last_stock_value_date_ping)))
                     except:
                         pass
                         # print('Something went wrong with smart insertion.') # TODO: This must be a logger.
