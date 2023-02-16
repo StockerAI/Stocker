@@ -125,4 +125,5 @@ def company_details_parser(ticker):
         }
         return company_details_dict
     except:
-        print('Something went wrong with details parser.') # TODO: This must be a logger.
+        pass
+        # print('Something went wrong with details parser.') # TODO: This must be a logger.

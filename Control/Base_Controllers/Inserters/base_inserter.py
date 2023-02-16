@@ -12,7 +12,7 @@ def base_inserter(table, values):
         INSERT INTO `table` VALUES `values`
     '''
     try:
-        (insert(table), values)
+        return insert(table).values(values)
     except:
         pass
         # print('Something went wrong with insertion.') # TODO: This must be a logger.

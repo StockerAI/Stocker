@@ -1,17 +1,18 @@
 from sqlalchemy import select
 
-def base_selector(table):
+def base_distinct_column_selector(columnName, table):
     '''
     Function that executes the base `SQL` SELECT `query`.
 
     Arguments:
+        `column`: User must provide the Column name of the `DataBase` from which the data will be extracted from, 
         `table`: User must provide the Table of the `DataBase` from which the data will be extracted from.
 
     SQL query example:
-        SELECT * FROM `table`
+        SELECT DISTINCT `column1` FROM `table`
     '''
     try:
-        return select(table)
+        return select(columnName).select_from(table).distinct()
     except:
         pass
         # print('Something went wrong with selection.') # TODO: This must be a logger.
