@@ -8,8 +8,7 @@ class Tickers(Base):
     Columns: 
         `tickerId`: The ID of the Ticker,
         `stockMarket`: The Stock Market that the Ticker belongs to,
-        `tickerName`: The Name (or Abbreviation) of the Ticker and,
-        `organizationName`: The Organization that the Ticker belongs to.
+        `tickerName`: The Name (or Abbreviation) of the Ticker.
     '''
 
     __tablename__ = 'Tickers'
@@ -20,9 +19,8 @@ class Tickers(Base):
     tickerId = Column(Integer, primary_key=True, nullable=False)
     stockMarket = Column(String, nullable=False)
     tickerName = Column(String, nullable=False)
-    organizationName = Column(String)
 
     UniqueConstraint(stockMarket, tickerName)
 
     def __repr__(self):
-        return f'Tickers(tickerId={self.tickerId!r}, stockMarket={self.stockMarket!r} tickerName={self.tickerName!r}, organizationName={self.organizationName!r})'
+        return f'Tickers(tickerId={self.tickerId!r}, stockMarket={self.stockMarket!r} tickerName={self.tickerName!r})'
