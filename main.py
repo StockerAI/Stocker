@@ -181,6 +181,67 @@ if __name__ == "__main__":
             # base.Base.metadata.tables[stocks.Stocks.__tablename__].drop(engine)
         # endregion
 
+        # region Inserter for Stocks table, new stock vales based on date.
+        with Session(engine).begin():
+            if sql_select_to_list(
+                silent_executioner(
+                    connection=connection,
+                    SIUD=base_count_selector(
+                        table=base.Base.metadata.tables[stocks.Stocks.__tablename__]
+                    ),
+                )
+            )[0]._data[0]:
+                tickers_list = sql_select_to_list(
+                    silent_executioner(
+                        connection=connection,
+                        SIUD=base_selector(
+                            table=base.Base.metadata.tables[
+                                tickers.Tickers.__tablename__
+                            ]
+                        ),
+                    )
+                )
+                for ticker in tqdm(
+                    tickers_list,
+                    desc="Parsing Stock Data",
+                    unit="ticker",
+                    total=len(tickers_list),
+                ):
+                    try:
+                        last_stock_value_date_ping = sql_select_to_list(
+                            silent_executioner(
+                                connection=connection,
+                                SIUD=base_conditional_ordered_limited_selector(
+                                    table=base.Base.metadata.tables[
+                                        stocks.Stocks.__tablename__
+                                    ],
+                                    columnName=base.Base.metadata.tables[
+                                        stocks.Stocks.__tablename__
+                                    ].c.tickerId,
+                                    columnValue=ticker[0],
+                                    orderColumn=base.Base.metadata.tables[
+                                        stocks.Stocks.__tablename__
+                                    ].c.date,
+                                    limitNumber=1,
+                                ),
+                            )
+                        )[0][2] + datetime.timedelta(days=1)
+                        silent_executioner(
+                            connection=connection,
+                            SIUD=base_inserter(
+                                table=base.Base.metadata.tables[
+                                    stocks.Stocks.__tablename__
+                                ],
+                                values=stock_parser(
+                                    ticker=ticker, start_date=last_stock_value_date_ping
+                                ),
+                            ),
+                        )
+                    except:
+                        pass
+                        # print('Something went wrong with smart insertion.') # TODO: This must be a logger.
+        # endregion
+
         # region Inserter for CompanyDetails table.
         with Session(engine).begin():
             if not sql_select_to_list(
@@ -284,67 +345,6 @@ if __name__ == "__main__":
                             ),
                         )
             # base.Base.metadata.tables[company_details.Company_Details.__tablename__].drop(engine)
-        # endregion
-
-        # region Inserter for Stocks table, new stock vales based on date.
-        with Session(engine).begin():
-            if sql_select_to_list(
-                silent_executioner(
-                    connection=connection,
-                    SIUD=base_count_selector(
-                        table=base.Base.metadata.tables[stocks.Stocks.__tablename__]
-                    ),
-                )
-            )[0]._data[0]:
-                tickers_list = sql_select_to_list(
-                    silent_executioner(
-                        connection=connection,
-                        SIUD=base_selector(
-                            table=base.Base.metadata.tables[
-                                tickers.Tickers.__tablename__
-                            ]
-                        ),
-                    )
-                )
-                for ticker in tqdm(
-                    tickers_list,
-                    desc="Parsing Stock Data",
-                    unit="ticker",
-                    total=len(tickers_list),
-                ):
-                    try:
-                        last_stock_value_date_ping = sql_select_to_list(
-                            silent_executioner(
-                                connection=connection,
-                                SIUD=base_conditional_ordered_limited_selector(
-                                    table=base.Base.metadata.tables[
-                                        stocks.Stocks.__tablename__
-                                    ],
-                                    columnName=base.Base.metadata.tables[
-                                        stocks.Stocks.__tablename__
-                                    ].c.tickerId,
-                                    columnValue=ticker[0],
-                                    orderColumn=base.Base.metadata.tables[
-                                        stocks.Stocks.__tablename__
-                                    ].c.date,
-                                    limitNumber=1,
-                                ),
-                            )
-                        )[0][2] + datetime.timedelta(days=1)
-                        silent_executioner(
-                            connection=connection,
-                            SIUD=base_inserter(
-                                table=base.Base.metadata.tables[
-                                    stocks.Stocks.__tablename__
-                                ],
-                                values=stock_parser(
-                                    ticker=ticker, start_date=last_stock_value_date_ping
-                                ),
-                            ),
-                        )
-                    except:
-                        pass
-                        # print('Something went wrong with smart insertion.') # TODO: This must be a logger.
         # endregion
 
         # Uncomment bellow line to drop everything on the database.
