@@ -128,7 +128,7 @@ if __name__ == "__main__":
                         connection,
                     )
                     .squeeze()
-                    .values.tolist()
+                    .tolist()
                 )
                 stocks_ticker_id_list = (
                     pandas.read_sql(
@@ -143,7 +143,7 @@ if __name__ == "__main__":
                         connection,
                     )
                     .squeeze()
-                    .values.tolist()
+                    .tolist()
                 )
                 id_differences = numpy.setdiff1d(
                     tickers_ticker_id_list, stocks_ticker_id_list
@@ -294,9 +294,9 @@ if __name__ == "__main__":
                         connection,
                     )
                     .squeeze()
-                    .values.tolist()
+                    .tolist()
                 )
-                stocks_ticker_id_list = (
+                company_details_ticker_id_list = (
                     pandas.read_sql(
                         base_distinct_column_selector(
                             columnName=base.Base.metadata.tables[
@@ -309,10 +309,10 @@ if __name__ == "__main__":
                         connection,
                     )
                     .squeeze()
-                    .values.tolist()
+                    .tolist()
                 )
                 id_differences = numpy.setdiff1d(
-                    tickers_ticker_id_list, stocks_ticker_id_list
+                    tickers_ticker_id_list, company_details_ticker_id_list
                 )
                 if id_differences.tolist():
                     tickers_list = sql_select_to_list(
