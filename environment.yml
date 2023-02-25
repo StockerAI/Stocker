@@ -4,7 +4,7 @@ channels:
 dependencies:
   - python=3.8
   - sqlalchemy
-  - modin-all
+  - modin-all=0.16.2
   - pip:
     - rich
     - scikit_learn==1.1.3
