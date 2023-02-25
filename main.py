@@ -58,10 +58,12 @@ if __name__ == "__main__":
     # NOTE: name of logger must be static, otherwise it 
     # will create a new logger every time.
     logger = Logger(
-        "Logger", log_file=args.log_file, 
-        verbose=args.verbose, out_dir=args.log_dir,
-        enable_datetime_stamp=args.enable_datetime_stamp,
-        with_datetime_stamp=args.enable_datetime_stamp)
+        "Logger",
+        log_file=args.log_file,
+        verbose=args.verbose,
+        out_dir=args.log_dir,
+        enable_datetime_stamp=args.enable_datetime_stamp
+    )
     with engine.connect() as connection:
         # with connection.begin():
         with Session(engine).begin():

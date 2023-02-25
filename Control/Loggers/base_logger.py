@@ -1,5 +1,6 @@
 import os
 import logging
+from pathlib import Path
 from datetime import datetime
 from rich.logging import RichHandler
 
@@ -19,7 +20,8 @@ class Logger:
             self.logger.addHandler(self.handler)
 
         if log_file:
-            log_file_prefix = datetime.now().strftime('%Y-%m-%dT%H:%M:%S') if enable_datetime_stamp else ""
+            Path(out_dir).mkdir(parents=True, exist_ok=True)
+            log_file_prefix = datetime.now().strftime('%Y-%m-%dT%H-%M-%S') if enable_datetime_stamp else ""
             log_file_path = os.path.join(out_dir, f"{log_file_prefix}_{log_file}")
             file_handler = logging.FileHandler(log_file_path)
             file_handler.setLevel(level)
