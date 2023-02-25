@@ -29,6 +29,8 @@ from Base_Parsers.Stock_Parsers.stock_parser import stock_parser
 from Base_Parsers.company_details_parsers.company_details_parser import (
     company_details_parser,
 )
+from Control.Loggers.base_logger import Logger
+from Control.Util_Controllers.option_utils import get_args
 from Control.Util_Controllers.modin_utils import init_modin
 from tqdm import tqdm
 import os
@@ -52,6 +54,14 @@ if __name__ == "__main__":
         + "",
         echo=False,
     )
+    args = get_args()
+    # NOTE: name of logger must be static, otherwise it 
+    # will create a new logger every time.
+    logger = Logger(
+        "Logger", log_file=args.log_file, 
+        verbose=args.verbose, out_dir=args.log_dir,
+        enable_datetime_stamp=args.enable_datetime_stamp,
+        with_datetime_stamp=args.enable_datetime_stamp)
     with engine.connect() as connection:
         # with connection.begin():
         with Session(engine).begin():
@@ -238,8 +248,7 @@ if __name__ == "__main__":
                             ),
                         )
                     except:
-                        pass
-                        # print('Something went wrong with smart insertion.') # TODO: This must be a logger.
+                        logger.info("Something went wrong with smart insertion.")
         # endregion
 
         # region Inserter for CompanyDetails table.

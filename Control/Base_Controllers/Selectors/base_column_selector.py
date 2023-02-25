@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy import select
 
 def base_column_selector(columnName, table):
@@ -14,5 +15,5 @@ def base_column_selector(columnName, table):
     try:
         return select(columnName).select_from(table)
     except:
-        pass
-        # print('Something went wrong with selection.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.error('Something went wrong with selection.')

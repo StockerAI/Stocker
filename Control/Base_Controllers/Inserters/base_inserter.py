@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy import insert
 
 def base_inserter(table, values):
@@ -14,5 +15,5 @@ def base_inserter(table, values):
     try:
         return insert(table).values(values)
     except:
-        pass
-        # print('Something went wrong with insertion.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.error('Something went wrong with insertion.')

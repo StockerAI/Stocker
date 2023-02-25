@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy import update
 
 def base_updater(table, values):
@@ -14,5 +15,5 @@ def base_updater(table, values):
     try:
         (update(table), values)
     except:
-        pass
-        # print('Something went wrong with update.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.error('Something went wrong with update.')
