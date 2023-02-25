@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy import select
 
 def base_conditional_in_selector(table, columnName, columnValues):
@@ -16,5 +17,5 @@ def base_conditional_in_selector(table, columnName, columnValues):
     try:
         return select(table).where(columnName.in_(columnValues))
     except:
-        pass
-        # print('Something went wrong with selection.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.error('Something went wrong with conditional selection.')

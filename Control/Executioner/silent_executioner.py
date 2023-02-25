@@ -1,3 +1,5 @@
+import logging
+
 def silent_executioner(connection, SIUD):
     '''
     Function that silently executes the base `SQL query`.
@@ -9,5 +11,5 @@ def silent_executioner(connection, SIUD):
     try:
         return connection.execution_options(stream_results=False).execute(SIUD)
     except:
-        pass
-        # print('Something went wrong with execution.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.error('Something went wrong with silent execution.')

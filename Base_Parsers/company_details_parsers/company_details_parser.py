@@ -1,4 +1,5 @@
 import yfinance
+import logging
 
 def company_details_parser(ticker):
     try:
@@ -125,5 +126,5 @@ def company_details_parser(ticker):
         }
         return company_details_dict
     except:
-        pass
-        # print('Something went wrong with details parser.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.info('Something went wrong with details parser.')

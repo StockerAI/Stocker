@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy import select
 from sqlalchemy import func
 
@@ -14,5 +15,5 @@ def base_count_selector(table):
     try:
         return select(func.count()).select_from(table)
     except:
-        pass
-        # print('Something went wrong with selection.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.error('Something went wrong with count selection.')

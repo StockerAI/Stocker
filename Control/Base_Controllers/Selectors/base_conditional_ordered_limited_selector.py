@@ -1,3 +1,4 @@
+import logging 
 from sqlalchemy import select
 
 def base_conditional_ordered_limited_selector(table, columnName, columnValue, orderColumn, limitNumber):
@@ -23,5 +24,5 @@ def base_conditional_ordered_limited_selector(table, columnName, columnValue, or
         else:
             return select(table).where(columnName == columnValue).order_by(orderColumn)
     except:
-        pass
-        # print('Something went wrong with conditional ordered limited selection.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.error('Something went wrong with conditional ordered limited selection.')
