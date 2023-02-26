@@ -68,6 +68,9 @@ if __name__ == "__main__":
         # with connection.begin():
         with Session(engine).begin():
             base.Base.metadata.create_all(engine, checkfirst=True)
+            
+            # Uncomment bellow line to drop everything on the database.
+            # base.Base.metadata.drop_all(engine, checkfirst=True)
 
         # region Inserter for Tickers table.
         with Session(engine).begin():
@@ -357,6 +360,3 @@ if __name__ == "__main__":
                         )
             # base.Base.metadata.tables[company_details.Company_Details.__tablename__].drop(engine)
         # endregion
-
-        # Uncomment bellow line to drop everything on the database.
-        # base.Base.metadata.drop_all(engine, checkfirst=True)
