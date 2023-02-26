@@ -5,7 +5,7 @@ from yahoo_fin import stock_info
 from Control.Util_Controllers.modin_utils import on_demand_garbage_collect
 
 def stock_parser_worker(ticker, curr_idx, df_index_ptr, start_date=None, end_date=None):
-    """
+    '''
     Extracts stock data for a given ticker and time range.
 
     Arguments:
@@ -18,7 +18,7 @@ def stock_parser_worker(ticker, curr_idx, df_index_ptr, start_date=None, end_dat
     Returns:
         tuple: Tuple containing a list of dictionaries with the stock data, 
         the current index in the list of tickers, and the ending index for the data frame.
-    """
+    '''
     # Create an empty data frame with the necessary columns
     base_data_frame = pd.DataFrame(columns=['tickerId', 'date', 'open', 'high', 'low', 'close', 'adjclose', 'volume'])
     
