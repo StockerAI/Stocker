@@ -1,6 +1,5 @@
 import yfinance
 import yahooquery
-from datetime import datetime
 import pandas
 import logging
 
