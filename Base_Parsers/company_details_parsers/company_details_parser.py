@@ -1,8 +1,16 @@
 import yfinance
+import yahooquery
+import pandas
+import logging
 
 def company_details_parser(ticker):
     try:
-        info = yfinance.Ticker(ticker[2]).info
+        yfinance_info = yfinance.Ticker(ticker[2]).fast_info
+        yahooquery_info = {**yahooquery.Ticker(ticker[2]).summary_detail[ticker[2]],
+                           **yahooquery.Ticker(ticker[2]).summary_profile[ticker[2]],
+                           **yahooquery.Ticker(ticker[2]).key_stats[ticker[2]]}
+        info = {**yfinance_info,
+                **yahooquery_info}
         company_details_dict = {
             'tickerId': ticker[0],
             'sector': info.get('sector'),
@@ -47,7 +55,7 @@ def company_details_parser(ticker):
             'exchangeTimezoneName': info.get('exchangeTimezoneName'),
             'exchangeTimezoneShortName': info.get('exchangeTimezoneShortName'),
             'quoteType': info.get('quoteType'),
-            'symbol': info.get('symbol'),
+            'symbol': ticker[2],
             'messageBoardId': info.get('messageBoardId'),
             'market': info.get('market'),
             'annualHoldingsTurnover': info.get('annualHoldingsTurnover'),
@@ -62,7 +70,7 @@ def company_details_parser(ticker):
             'bookValue': info.get('bookValue'),
             'sharesShort': info.get('sharesShort'),
             'sharesPercentSharesOut': info.get('sharesPercentSharesOut'),
-            'lastFiscalYearEnd': info.get('lastFiscalYearEnd'),
+            'lastFiscalYearEnd': pandas.to_datetime(info.get('lastFiscalYearEnd'), errors='coerce'),
             'heldPercentInstitutions': info.get('heldPercentInstitutions'),
             'netIncomeToCommon': info.get('netIncomeToCommon'),
             'trailingEps': info.get('trailingEps'),
@@ -70,20 +78,20 @@ def company_details_parser(ticker):
             'SandP52WeekChange': info.get('SandP52WeekChange'),
             'priceToBook': info.get('priceToBook'),
             'heldPercentInsiders': info.get('heldPercentInsiders'),
-            'nextFiscalYearEnd': info.get('nextFiscalYearEnd'),
-            'mostRecentQuarter': info.get('mostRecentQuarter'),
+            'nextFiscalYearEnd': pandas.to_datetime(info.get('nextFiscalYearEnd'), errors='coerce'),
+            'mostRecentQuarter': pandas.to_datetime(info.get('mostRecentQuarter'), errors='coerce'),
             'shortRatio': info.get('shortRatio'),
-            'sharesShortPreviousMonthDate': info.get('sharesShortPreviousMonthDate'),
+            'sharesShortPreviousMonthDate': pandas.to_datetime(info.get('sharesShortPreviousMonthDate'), errors='coerce'),
             'floatShares': info.get('floatShares'),
             'beta': info.get('beta'),
             'enterpriseValue': info.get('enterpriseValue'),
             'priceHint': info.get('priceHint'),
-            'lastSplitDate': info.get('lastSplitDate'),
+            'lastSplitDate': pandas.to_datetime(info.get('lastSplitDate'), errors='coerce'),
             'lastSplitFactor': info.get('lastSplitFactor'),
-            'lastDividendDate': info.get('lastDividendDate'),
+            'lastDividendDate': pandas.to_datetime(info.get('lastDividendDate'), errors='coerce'),
             'earningsQuarterlyGrowth': info.get('earningsQuarterlyGrowth'),
             'priceToSalesTrailing12Months': info.get('priceToSalesTrailing12Months'),
-            'dateShortInterest': info.get('dateShortInterest'),
+            'dateShortInterest': pandas.to_datetime(info.get('dateShortInterest'), errors='coerce'),
             'pegRatio': info.get('pegRatio'),
             'forwardPE': info.get('forwardPE'),
             'shortPercentOfFloat': info.get('shortPercentOfFloat'),
@@ -103,7 +111,7 @@ def company_details_parser(ticker):
             'open': info.get('open'),
             'averageVolume10days': info.get('averageVolume10days'),
             'dividendRate': info.get('dividendRate'),
-            'exDividendDate': info.get('exDividendDate'),
+            'exDividendDate': pandas.to_datetime(info.get('exDividendDate'), errors='coerce'),
             'regularMarketDayLow': info.get('regularMarketDayLow'),
             'currency': info.get('currency'),
             'trailingPE': info.get('trailingPE'),
@@ -125,5 +133,5 @@ def company_details_parser(ticker):
         }
         return company_details_dict
     except:
-        pass
-        # print('Something went wrong with details parser.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.info('Something went wrong with details parser.')

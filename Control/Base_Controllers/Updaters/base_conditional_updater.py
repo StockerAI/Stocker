@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy import update
 
 def base_conditional_updater(table, columnName, columnValue, values):
@@ -16,5 +17,5 @@ def base_conditional_updater(table, columnName, columnValue, values):
     try:
         (update(table).where(columnName == columnValue), values)
     except:
-        pass
-        # print('Something went wrong with conditional update.') # TODO: This must be a logger.
+        logger = logging.getLogger('Logger')
+        logger.error('Something went wrong with conditional update.')

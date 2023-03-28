@@ -29,6 +29,8 @@ from Base_Parsers.Stock_Parsers.stock_parser import stock_parser
 from Base_Parsers.company_details_parsers.company_details_parser import (
     company_details_parser,
 )
+from Control.Loggers.base_logger import Logger
+from Control.Util_Controllers.option_utils import get_args
 from Control.Util_Controllers.modin_utils import init_modin
 from tqdm import tqdm
 import os
@@ -52,10 +54,23 @@ if __name__ == "__main__":
         + "",
         echo=False,
     )
+    args = get_args()
+    # NOTE: name of logger must be static, otherwise it 
+    # will create a new logger every time.
+    logger = Logger(
+        "Logger",
+        log_file=args.log_file,
+        verbose=args.verbose,
+        out_dir=args.log_dir,
+        enable_datetime_stamp=args.enable_datetime_stamp
+    )
     with engine.connect() as connection:
         # with connection.begin():
         with Session(engine).begin():
             base.Base.metadata.create_all(engine, checkfirst=True)
+            
+            # Uncomment bellow line to drop everything on the database.
+            # base.Base.metadata.drop_all(engine, checkfirst=True)
 
         # region Inserter for Tickers table.
         with Session(engine).begin():
@@ -128,7 +143,7 @@ if __name__ == "__main__":
                         connection,
                     )
                     .squeeze()
-                    .values.tolist()
+                    .tolist()
                 )
                 stocks_ticker_id_list = (
                     pandas.read_sql(
@@ -143,7 +158,7 @@ if __name__ == "__main__":
                         connection,
                     )
                     .squeeze()
-                    .values.tolist()
+                    .tolist()
                 )
                 id_differences = numpy.setdiff1d(
                     tickers_ticker_id_list, stocks_ticker_id_list
@@ -238,8 +253,7 @@ if __name__ == "__main__":
                             ),
                         )
                     except:
-                        pass
-                        # print('Something went wrong with smart insertion.') # TODO: This must be a logger.
+                        logger.info("Something went wrong with smart insertion.")
         # endregion
 
         # region Inserter for CompanyDetails table.
@@ -294,9 +308,9 @@ if __name__ == "__main__":
                         connection,
                     )
                     .squeeze()
-                    .values.tolist()
+                    .tolist()
                 )
-                stocks_ticker_id_list = (
+                company_details_ticker_id_list = (
                     pandas.read_sql(
                         base_distinct_column_selector(
                             columnName=base.Base.metadata.tables[
@@ -309,10 +323,10 @@ if __name__ == "__main__":
                         connection,
                     )
                     .squeeze()
-                    .values.tolist()
+                    .tolist()
                 )
                 id_differences = numpy.setdiff1d(
-                    tickers_ticker_id_list, stocks_ticker_id_list
+                    tickers_ticker_id_list, company_details_ticker_id_list
                 )
                 if id_differences.tolist():
                     tickers_list = sql_select_to_list(
@@ -346,6 +360,3 @@ if __name__ == "__main__":
                         )
             # base.Base.metadata.tables[company_details.Company_Details.__tablename__].drop(engine)
         # endregion
-
-        # Uncomment bellow line to drop everything on the database.
-        # base.Base.metadata.drop_all(engine, checkfirst=True)
