@@ -17,3 +17,4 @@ dependencies:
     - gpustat==1.0.0
     - tqdm==4.64.1
     - yfinance==0.2.12
+    - yahooquery==2.3.1

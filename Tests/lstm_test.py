@@ -3,8 +3,10 @@ import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 
+batch_size = 1
+
 # Load the data for the S&P 500
-stock_data = yf.download("^GSPC", start="2010-01-01", end="2022-02-25")
+stock_data = yf.download("AAPL", start="2010-01-01", end="2022-02-25")
 
 # Normalize the data
 stock_data["Adj Close"] = stock_data["Adj Close"] / stock_data["Adj Close"].max()
@@ -30,7 +32,7 @@ class LSTM(nn.Module):
 model = LSTM(input_size=1, hidden_size=64, output_size=1)
 
 # Define the loss function and optimizer
-criterion = nn.MSELoss()
+criterion = nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 # Train the model
@@ -38,6 +40,7 @@ num_epochs = 100
 train_losses = []
 for epoch in range(num_epochs):
     train_loss = 0.0
+    hidden = model.init_hidden(batch_size)
     for i in range(len(train_data)-1):
         # Prepare the input and target tensors
         input_tensor = torch.Tensor(train_data[i:i+1])
@@ -64,6 +67,7 @@ model.eval()
 with torch.no_grad():
     test_inputs = torch.Tensor(test_data[:-1]).squeeze()
     test_outputs = []
+    hidden = model.init_hidden(batch_size)
     with torch.no_grad():
         for i in range(len(test_data) - 1):
             input_tensor = torch.Tensor([[test_data[i]]])
