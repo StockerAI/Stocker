@@ -55,7 +55,7 @@ if __name__ == "__main__":
         echo=False,
     )
     args = get_args()
-    # NOTE: name of logger must be static, otherwise it 
+    # NOTE: name of logger must be static, otherwise it
     # will create a new logger every time.
     logger = Logger(
         "Logger",
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         # with connection.begin():
         with Session(engine).begin():
             base.Base.metadata.create_all(engine, checkfirst=True)
-            
+
             # Uncomment bellow line to drop everything on the database.
             # base.Base.metadata.drop_all(engine, checkfirst=True)
 
@@ -253,7 +253,8 @@ if __name__ == "__main__":
                             ),
                         )
                     except:
-                        logger.info("Something went wrong with smart insertion.")
+                        logger.info(
+                            "Something went wrong with smart insertion.")
         # endregion
 
         # region Inserter for CompanyDetails table.
