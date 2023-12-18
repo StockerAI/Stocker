@@ -16,6 +16,6 @@ def base_conditional_updater(table, columnName, columnValue, values):
     '''
     try:
         (update(table).where(columnName == columnValue), values)
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with conditional update.')
+        logger.error(f'Something went wrong with conditional update: {e}')

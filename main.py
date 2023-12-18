@@ -98,6 +98,7 @@ def insert_new_stock_values_based_on_date(engine, connection, logger):
                                 columnValue=ticker[0],
                                 orderColumn=stocks_table.c.date,
                                 limitNumber=1,
+                                descending=True
                             ),
                         )
                     )[0][2] + datetime.timedelta(days=1)

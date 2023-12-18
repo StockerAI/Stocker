@@ -16,6 +16,6 @@ def base_conditional_in_selector(table, columnName, columnValues):
     '''
     try:
         return select(table).where(columnName.in_(columnValues))
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with conditional selection.')
+        logger.error(f'Something went wrong with conditional selection: {e}')

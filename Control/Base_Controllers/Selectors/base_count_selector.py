@@ -14,6 +14,6 @@ def base_count_selector(table):
     '''
     try:
         return select(func.count()).select_from(table)
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with count selection.')
+        logger.error(f'Something went wrong with count selection: {e}')

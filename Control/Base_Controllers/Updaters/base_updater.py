@@ -14,6 +14,6 @@ def base_updater(table, values):
     '''
     try:
         (update(table), values)
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with update.')
+        logger.error(f'Something went wrong with update: {e}')

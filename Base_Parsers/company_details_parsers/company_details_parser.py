@@ -132,6 +132,6 @@ def company_details_parser(ticker):
             'regularMarketPrice': info.get('regularMarketPrice'),
         }
         return company_details_dict
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.info('Something went wrong with details parser.')
+        logger.info(f'Something went wrong with details parser: {e}')

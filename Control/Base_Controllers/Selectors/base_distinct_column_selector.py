@@ -14,6 +14,6 @@ def base_distinct_column_selector(columnName, table):
     '''
     try:
         return select(columnName).select_from(table).distinct()
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with distinct selection.')
+        logger.error(f'Something went wrong with distinct selection: {e}')
