@@ -166,9 +166,9 @@ def main():
     # Database operations
     with engine.connect() as connection:
         initialize_database(engine)
-        # insert_tickers_if_not_exists(engine, connection)
-        # insert_stocks_if_not_exists(engine, connection)
-        # insert_new_stock_values_based_on_date(engine, connection, logger)
+        insert_tickers_if_not_exists(engine, connection)
+        insert_stocks_if_not_exists(engine, connection)
+        insert_new_stock_values_based_on_date(engine, connection, logger)
         insert_company_details_if_not_exists(engine, connection)
 
 if __name__ == "__main__":
