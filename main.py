@@ -111,11 +111,11 @@ def insert_new_stock_values_based_on_date(engine, connection, logger):
                         ),
                     )
                 except Exception as e:
-                    logger.info(f"Something went wrong with smart insertion for ticker {ticker[0]}: {e}")
+                    logger.info(f"Something went wrong with smart insertion in {stocks_table} for ticker {ticker[0]}: {e}")
 
         # base.Base.metadata.tables[stocks.Stocks.__tablename__].drop(engine)
 
-def insert_company_details_if_not_exists(engine, connection):
+def insert_company_details_if_not_exists(engine, connection, logger):
     """
     Inserts company details into the database if they don't exist.
     """
@@ -139,7 +139,10 @@ def insert_company_details_if_not_exists(engine, connection):
             if id_differences.tolist():
                 tickers_list = sql_select_to_list(silent_executioner(connection, base_conditional_in_selector(tickers_table, tickers_table.c.tickerId, id_differences.tolist())))
                 for ticker in tqdm(tickers_list, desc="Parsing Company Details Data", unit="ticker", total=len(tickers_list)):
-                    silent_executioner(connection, base_inserter(company_details_table, [company_details_parser(ticker=ticker)]))
+                    try:
+                        silent_executioner(connection, base_inserter(company_details_table, [company_details_parser(ticker=ticker)]))
+                    except Exception as e:
+                        logger.info(f"Something went wrong with smart insertion in {company_details_table} for ticker {ticker[0]}: {e}")
 
         # base.Base.metadata.tables[company_details.Company_Details.__tablename__].drop(engine)
 
@@ -169,7 +172,7 @@ def main():
         insert_tickers_if_not_exists(engine, connection)
         insert_stocks_if_not_exists(engine, connection)
         insert_new_stock_values_based_on_date(engine, connection, logger)
-        insert_company_details_if_not_exists(engine, connection)
+        insert_company_details_if_not_exists(engine, connection, logger)
 
 if __name__ == "__main__":
     main()
