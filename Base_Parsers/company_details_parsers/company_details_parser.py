@@ -5,12 +5,13 @@ import logging
 
 def company_details_parser(ticker):
     try:
-        yfinance_info = yfinance.Ticker(ticker[2]).fast_info
-        yahooquery_info = {**yahooquery.Ticker(ticker[2]).summary_detail[ticker[2]],
-                           **yahooquery.Ticker(ticker[2]).summary_profile[ticker[2]],
-                           **yahooquery.Ticker(ticker[2]).key_stats[ticker[2]]}
-        info = {**yfinance_info,
-                **yahooquery_info}
+        yfinance_info = yfinance.Ticker(ticker[2]).info
+        info = yfinance_info
+        # yahooquery_info = {**yahooquery.Ticker(ticker[2]).summary_detail[ticker[2]],
+        #                    **yahooquery.Ticker(ticker[2]).summary_profile[ticker[2]],
+        #                    **yahooquery.Ticker(ticker[2]).key_stats[ticker[2]]}
+        # info = {**yfinance_info,
+        #         **yahooquery_info}
         company_details_dict = {
             'tickerId': ticker[0],
             'sector': info.get('sector'),

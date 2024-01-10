@@ -69,7 +69,7 @@ class Company_Details(Base):
     revenueQuarterlyGrowth = Column(Float)
     sharesOutstanding = Column(BigInteger)
     annualReportExpenseRatio = Column(Float)
-    totalAssets = Column(Integer)
+    totalAssets = Column(BigInteger)
     bookValue = Column(Float)
     sharesShort = Column(BigInteger)
     sharesPercentSharesOut = Column(Float)
