@@ -1,11 +1,26 @@
+import io
+import sys
 import yfinance
 import yahooquery
 import pandas
 import logging
 
+# Create a string buffer to capture standard error
+err_buffer = io.StringIO()
+
+# Save the original stderr stream
+original_stderr = sys.stderr
+
 def company_details_parser(ticker):
     try:
+        # Redirect stderr to the buffer
+        sys.stderr = err_buffer
+
         yfinance_info = yfinance.Ticker(ticker[2]).info
+        
+        # Reset stderr to its original value
+        sys.stderr = original_stderr
+        
         info = yfinance_info
         # yahooquery_info = {**yahooquery.Ticker(ticker[2]).summary_detail[ticker[2]],
         #                    **yahooquery.Ticker(ticker[2]).summary_profile[ticker[2]],
