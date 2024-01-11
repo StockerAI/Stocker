@@ -13,7 +13,7 @@ def base_updater(table, values):
         UPDATE `table` SET `values`
     '''
     try:
-        (update(table), values)
+        return (update(table).values(values))
     except Exception as e:
         logger = logging.getLogger('Logger')
         logger.error(f'Something went wrong with update: {e}')
