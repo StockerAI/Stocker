@@ -17,11 +17,13 @@ def company_details_parser(ticker):
         sys.stderr = err_buffer
 
         yfinance_info = yfinance.Ticker(ticker[2]).info
+        yfinance_history_metadata = yfinance.Ticker(ticker[2]).history_metadata
         
         # Reset stderr to its original value
         sys.stderr = original_stderr
         
-        info = yfinance_info
+        info = {**yfinance_info,
+                **yfinance_history_metadata}
         # yahooquery_info = {**yahooquery.Ticker(ticker[2]).summary_detail[ticker[2]],
         #                    **yahooquery.Ticker(ticker[2]).summary_profile[ticker[2]],
         #                    **yahooquery.Ticker(ticker[2]).key_stats[ticker[2]]}
@@ -146,6 +148,7 @@ def company_details_parser(ticker):
             'bidSize': info.get('bidSize'),
             'dayHigh': info.get('dayHigh'),
             'regularMarketPrice': info.get('regularMarketPrice'),
+            'instrumentType': info.get('instrumentType'),
         }
         return company_details_dict
     except Exception as e:

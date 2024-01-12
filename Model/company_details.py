@@ -133,6 +133,7 @@ class Company_Details(Base):
     bidSize = Column(Integer)
     dayHigh = Column(Float)
     regularMarketPrice = Column(Float)
+    instrumentType = Column(String)
 
     def __repr__(self):
         return(f'Company_Details(companyDetailsId={self.companyDetailsId!r},'
@@ -253,5 +254,6 @@ class Company_Details(Base):
                 f'dividendYield={self.dividendYield!r},'
                 f'bidSize={self.bidSize!r},'
                 f'dayHigh={self.dayHigh!r},'
-                f'regularMarketPrice={self.regularMarketPrice!r})'
+                f'regularMarketPrice={self.regularMarketPrice!r},'
+                f'instrumentType={self.instrumentType!r})'
             )
