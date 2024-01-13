@@ -5,7 +5,7 @@ import datetime
 from tqdm import tqdm
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
-from Model import base, tickers, stocks, company_details, countries
+from Model import base, tickers, stocks, company_details
 from Model.config import config
 from Base_Parsers.company_details_parsers.company_details_parser import company_details_parser
 from Base_Parsers.Stock_Parsers.stock_parser import stock_parser
@@ -14,7 +14,6 @@ from Base_Parsers.Tickers_Parser.ticker_parser import ticker_value_list
 from Control.Util_Controllers.modin_utils import init_modin
 from Control.Util_Controllers.option_utils import get_args
 from Control.Base_Controllers.Inserters.base_inserter import base_inserter
-from Control.Base_Controllers.Updaters.base_updater import base_updater
 from Control.Base_Controllers.Updaters.base_conditional_updater import base_conditional_updater
 from Control.Base_Controllers.Selectors.base_count_selector import base_count_selector
 from Control.Base_Controllers.Selectors.base_selector import base_selector
