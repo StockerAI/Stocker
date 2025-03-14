@@ -13,8 +13,8 @@
 ## Installation
 
 ```powershell
-conda env create --file environment.yml
-conda activate stocker
+conda create -n stocker python=3.12 pip
+pip install requirements.txt
 ```
 
 If there are more packages installed, update the `environment.yml` file with:
@@ -27,6 +27,22 @@ To export the packages to a `requirements.txt` file:
 
 ```powershell
 pipreqs . --force
+```
+
+If you want to build the environment from scratch, run the following:
+
+```powershell
+conda create -n stocker python=3.12 pip
+pip install SQLAlchemy
+pip install rich
+pip install psycopg2-binary
+pip install -U "ray[default]"
+pip install gpustat
+pip install tqdm
+pip install yfinance
+pip install yahooquery
+pip install "modin[all]"
+pip install yahoo_fin
 ```
 
 ## Base branches
