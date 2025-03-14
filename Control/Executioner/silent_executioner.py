@@ -10,6 +10,6 @@ def silent_executioner(connection, SIUD):
     '''
     try:
         return connection.execution_options(stream_results=False).execute(SIUD)
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with silent execution.')
+        logger.error(f'Something went wrong with silent execution: {e}')

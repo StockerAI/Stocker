@@ -14,6 +14,6 @@ def base_column_selector(columnName, table):
     '''
     try:
         return select(columnName).select_from(table)
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with selection.')
+        logger.error(f'Something went wrong with selection: {e}')

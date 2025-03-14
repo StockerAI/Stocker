@@ -14,6 +14,7 @@ from Base_Parsers.Tickers_Parser.ticker_parser import ticker_value_list
 from Control.Util_Controllers.modin_utils import init_modin
 from Control.Util_Controllers.option_utils import get_args
 from Control.Base_Controllers.Inserters.base_inserter import base_inserter
+from Control.Base_Controllers.Updaters.base_conditional_updater import base_conditional_updater
 from Control.Base_Controllers.Selectors.base_count_selector import base_count_selector
 from Control.Base_Controllers.Selectors.base_selector import base_selector
 from Control.Base_Controllers.Selectors.base_column_selector import base_column_selector
@@ -98,6 +99,7 @@ def insert_new_stock_values_based_on_date(engine, connection, logger):
                                 columnValue=ticker[0],
                                 orderColumn=stocks_table.c.date,
                                 limitNumber=1,
+                                descending=True
                             ),
                         )
                     )[0][2] + datetime.timedelta(days=1)
@@ -110,11 +112,11 @@ def insert_new_stock_values_based_on_date(engine, connection, logger):
                         ),
                     )
                 except Exception as e:
-                    logger.info(f"Something went wrong with smart insertion for ticker {ticker[0]}: {e}")
+                    logger.info(f"Something went wrong with smart insertion in {stocks_table} for ticker {ticker[0]}: {e}")
 
         # base.Base.metadata.tables[stocks.Stocks.__tablename__].drop(engine)
 
-def insert_company_details_if_not_exists(engine, connection):
+def insert_company_details_if_not_exists(engine, connection, logger):
     """
     Inserts company details into the database if they don't exist.
     """
@@ -138,9 +140,28 @@ def insert_company_details_if_not_exists(engine, connection):
             if id_differences.tolist():
                 tickers_list = sql_select_to_list(silent_executioner(connection, base_conditional_in_selector(tickers_table, tickers_table.c.tickerId, id_differences.tolist())))
                 for ticker in tqdm(tickers_list, desc="Parsing Company Details Data", unit="ticker", total=len(tickers_list)):
-                    silent_executioner(connection, base_inserter(company_details_table, [company_details_parser(ticker=ticker)]))
+                    try:
+                        silent_executioner(connection, base_inserter(company_details_table, [company_details_parser(ticker=ticker)]))
+                    except Exception as e:
+                        logger.info(f"Something went wrong with smart insertion in {company_details_table} for ticker {ticker[0]}: {e}")
 
         # base.Base.metadata.tables[company_details.Company_Details.__tablename__].drop(engine)
+
+def update_company_details(engine, connection, logger):
+    """
+    Update company details into the database.
+    """
+    with Session(engine).begin():
+        company_details_table = base.Base.metadata.tables[company_details.Company_Details.__tablename__]
+        tickers_table = base.Base.metadata.tables[tickers.Tickers.__tablename__]
+
+        tickers_list = sql_select_to_list(silent_executioner(connection, base_selector(tickers_table)))
+
+        for ticker in tqdm(tickers_list, desc="Parsing Company Details Data", unit="ticker", total=len(tickers_list)):
+            try:
+                silent_executioner(connection, base_conditional_updater(company_details_table, company_details_table.c.tickerId, ticker[0], company_details_parser(ticker=ticker)))
+            except Exception as e:
+                logger.info(f"Something went wrong with smart insertion in {company_details_table} for ticker {ticker[0]}: {e}")
 
 def main():
     os.environ["MODIN_ENGINE"] = "ray"  # Use Ray as the backend for Modin
@@ -168,7 +189,8 @@ def main():
         insert_tickers_if_not_exists(engine, connection)
         insert_stocks_if_not_exists(engine, connection)
         insert_new_stock_values_based_on_date(engine, connection, logger)
-        insert_company_details_if_not_exists(engine, connection)
+        insert_company_details_if_not_exists(engine, connection, logger)
+        update_company_details(engine, connection, logger)
 
 if __name__ == "__main__":
     main()

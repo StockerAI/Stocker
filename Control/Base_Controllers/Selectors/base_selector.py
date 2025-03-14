@@ -13,6 +13,6 @@ def base_selector(table):
     '''
     try:
         return select(table)
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with selection.')
+        logger.error(f'Something went wrong with selection: {e}')

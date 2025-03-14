@@ -43,7 +43,7 @@ class Company_Details(Base):
     targetMeanPrice = Column(Float)
     debtToEquity = Column(Float)
     returnOnEquity = Column(Float)
-    targetHighPrice = Column(Integer)
+    targetHighPrice = Column(Float)
     totalCash = Column(BigInteger)
     totalDebt = Column(BigInteger)
     totalRevenue = Column(BigInteger)
@@ -69,7 +69,7 @@ class Company_Details(Base):
     revenueQuarterlyGrowth = Column(Float)
     sharesOutstanding = Column(BigInteger)
     annualReportExpenseRatio = Column(Float)
-    totalAssets = Column(Integer)
+    totalAssets = Column(BigInteger)
     bookValue = Column(Float)
     sharesShort = Column(BigInteger)
     sharesPercentSharesOut = Column(Float)
@@ -99,7 +99,7 @@ class Company_Details(Base):
     forwardPE = Column(Float)
     shortPercentOfFloat = Column(Float)
     sharesShortPriorMonth = Column(BigInteger)
-    impliedSharesOutstanding = Column(Integer)
+    impliedSharesOutstanding = Column(BigInteger)
     category = Column(String)
     previousClose = Column(Float)
     regularMarketOpen = Column(Float)
@@ -133,6 +133,7 @@ class Company_Details(Base):
     bidSize = Column(Integer)
     dayHigh = Column(Float)
     regularMarketPrice = Column(Float)
+    instrumentType = Column(String)
 
     def __repr__(self):
         return(f'Company_Details(companyDetailsId={self.companyDetailsId!r},'
@@ -253,5 +254,6 @@ class Company_Details(Base):
                 f'dividendYield={self.dividendYield!r},'
                 f'bidSize={self.bidSize!r},'
                 f'dayHigh={self.dayHigh!r},'
-                f'regularMarketPrice={self.regularMarketPrice!r})'
+                f'regularMarketPrice={self.regularMarketPrice!r},'
+                f'instrumentType={self.instrumentType!r})'
             )

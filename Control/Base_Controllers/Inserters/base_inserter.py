@@ -14,6 +14,6 @@ def base_inserter(table, values):
     '''
     try:
         return insert(table).values(values)
-    except:
+    except Exception as e:
         logger = logging.getLogger('Logger')
-        logger.error('Something went wrong with insertion.')
+        logger.error(f'Something went wrong with insertion: {e}')
