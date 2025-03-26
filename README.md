@@ -14,6 +14,7 @@
 
 ```powershell
 conda create -n stocker python=3.12 pip
+conda activate stocker
 pip install -r requirements.txt
 ```
 
