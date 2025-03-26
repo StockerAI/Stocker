@@ -14,7 +14,7 @@
 
 ```powershell
 conda create -n stocker python=3.12 pip
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 If there are more packages installed, update the `environment.yml` file with:
